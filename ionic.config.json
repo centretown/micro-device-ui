@@ -1,0 +1,7 @@
+{
+  "name": "micro-device-ui",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
