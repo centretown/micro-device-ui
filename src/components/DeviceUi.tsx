@@ -1,53 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useContext } from "react";
 import { IonModal } from "@ionic/react";
 
-import {
-  Device,
-  DeviceStoreable,
-} from "micro-device-modules/lib/device";
-import { PinSelectable } from "micro-device-modules/lib/pin";
+import { Device } from "micro-device-modules";
 import DeviceList from "./DeviceList";
 import EditMenu from "./EditMenu";
 import DeviceForm from "./DeviceForm";
+import { DeviceContext } from "../context/device-context";
 
-const newDevice: Device = {
-  ip: "",
-  label: "",
-  model: "",
-  pins: new PinSelectable(),
-};
-
-const protoToggle = (k: string) => false;
-export const ToggleContext = React.createContext(protoToggle);
-export interface props {
-  devices: DeviceStoreable;
-}
-
-const DeviceUi: React.FC = () => {
-  const devices = useRef(new DeviceStoreable());
+export const DeviceUi: React.FC = () => {
+  const context = useContext(DeviceContext);
   const [modal, setModal] = useState(false);
-  const deviceRef = useRef<Device>(newDevice);
-  const [list, setList] = useState<Device[]>([]);
-
-  useEffect(() => {
-    devices.current.load();
-    setList(devices.current.sort());
-  }, []);
-
-  useEffect(() => {
-    devices.current.save();
-  }, [list]);
 
   const addClicked = () => {
+    context.newDevice();
     setModal(true);
   };
 
   const editClicked = () => {
+    context.getFirstSelection();
     setModal(true);
   };
 
   const removeClicked = () => {
-    devices.current.removeSelected();
+    context.removeSelected();
   };
 
   const close = () => {
@@ -56,24 +31,19 @@ const DeviceUi: React.FC = () => {
 
   const submit = (d: Device) => {
     close();
-    devices.current.put(d);
-    setList(devices.current.sort());
-  };
-
-  const toggle = (key: string) => {
-    return devices.current.toggleSelect(key);
+    context.put(d);
   };
 
   return (
-    <ToggleContext.Provider value={toggle}>
+    <>
       <IonModal
         isOpen={modal}
         swipeToClose={true}
         onDidDismiss={() => close()}
       >
         <DeviceForm
-          device={deviceRef.current}
-          close={close}
+          device={context.item}
+          close={() => close()}
           submit={submit}
         />
       </IonModal>
@@ -82,9 +52,14 @@ const DeviceUi: React.FC = () => {
         add={addClicked}
         remove={removeClicked}
         edit={editClicked}
+        vertical="bottom"
+        horizontal="end"
       />
-      <DeviceList keyf={devices.current.key} list={list} />
-    </ToggleContext.Provider>
+      <DeviceList
+        keyf={context.devices.key}
+        list={context.list}
+      ></DeviceList>
+    </>
   );
 };
 export default DeviceUi;

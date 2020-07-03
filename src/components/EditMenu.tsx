@@ -1,11 +1,6 @@
 import * as React from "react";
 
-import {
-  IonFabButton,
-  IonIcon,
-  IonFab,
-  IonFabList,
-} from "@ionic/react";
+import { IonFabButton, IonIcon, IonFab } from "@ionic/react";
 
 import {
   addOutline,
@@ -19,69 +14,77 @@ import {
   checkmarkCircleOutline,
   checkmarkCircleSharp,
 } from "ionicons/icons";
+import { useRef } from "react";
+
 interface editProps {
   add?(): void;
   remove?(): void;
   edit?(): void;
   submit?(): void;
-  cancel?(): void;
+  close?(): void;
+  vertical?: "top" | "bottom" | "center" | undefined;
+  horizontal?: "center" | "end" | "start" | undefined;
 }
 
-const dummy = () => {};
-
 const EditMenu: React.FC<editProps> = (props) => {
+  const ref = useRef(props);
+  const handleClose = () => {
+    if (ref.current.close) {
+      ref.current.close();
+    }
+  };
   return (
-    <IonFab vertical="top" horizontal="end" slot="fixed">
-      {props.edit && (
+    <IonFab
+      vertical={props.vertical}
+      horizontal={props.horizontal}
+      slot="fixed"
+    >
+      {ref.current.edit && (
         <IonFabButton
           size="small"
           translucent
-          onClick={props.edit}
+          onClick={ref.current.edit}
         >
           <IonIcon ios={pencilOutline} md={pencilSharp} />
         </IonFabButton>
       )}
-
-      {props.add && (
+      {ref.current.add && (
         <IonFabButton
           size="small"
           translucent
-          onClick={props.add}
+          onClick={ref.current.add}
         >
           <IonIcon ios={addOutline} md={addSharp} />
         </IonFabButton>
       )}
-
-      {props.remove && (
+      {ref.current.remove && (
         <IonFabButton
           size="small"
           translucent
-          onClick={props.remove}
+          onClick={ref.current.remove}
         >
           <IonIcon ios={removeOutline} md={removeSharp} />
         </IonFabButton>
       )}
-
-      {props.cancel && (
+      {ref.current.submit && (
         <IonFabButton
           size="small"
           translucent
-          onClick={props.cancel}
-        >
-          <IonIcon ios={exitOutline} md={exitSharp} />
-        </IonFabButton>
-      )}
-
-      {props.submit && (
-        <IonFabButton
-          size="small"
-          translucent
-          onClick={props.submit}
+          onClick={ref.current.submit}
         >
           <IonIcon
             ios={checkmarkCircleOutline}
             md={checkmarkCircleSharp}
           />
+        </IonFabButton>
+      )}
+      {ref.current.close && (
+        <IonFabButton
+          size="small"
+          translucent
+          onClick={handleClose}
+        >
+          <IonIcon ios={exitOutline} md={exitSharp} />
         </IonFabButton>
       )}
     </IonFab>

@@ -1,92 +1,141 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import {
-  IonCardTitle,
   IonItem,
   IonLabel,
   IonInput,
-  IonToolbar,
+  IonContent,
   IonButtons,
   IonButton,
+  IonSegment,
+  IonSegmentButton,
+  IonIcon,
+  IonToolbar,
+  IonText,
   IonList,
-  IonListHeader,
-  IonContent,
 } from "@ionic/react";
-import { Device } from "micro-device-modules/lib/device";
+import { Device, PinSelectable } from "micro-device-modules";
 import PinUi from "./PinUi";
+import PinState from "../context/PinState";
+import {
+  checkmarkOutline,
+  checkmarkSharp,
+  closeOutline,
+  closeSharp,
+} from "ionicons/icons";
 
 export interface DeviceFormProps {
   device: Device;
   submit: (p: Device) => void;
   close: () => void;
 }
+
 const DeviceForm: React.FC<DeviceFormProps> = (props) => {
+  const localPins: PinSelectable = new PinSelectable();
+  localPins.putList(props.device.pins.getAll());
+
   const [label, setLabel] = useState(props.device.label);
   const [model, setModel] = useState(props.device.model);
   const [ip, setIP] = useState(props.device.ip);
-  const pins = useRef(props.device.pins);
+  const [segment, setSegment] = useState("device");
 
   const onSubmit = () => {
+    props.device.pins.replace(localPins.sort());
     props.submit({
       ip: ip,
       model: model,
       label: label,
-      pins: pins.current,
+      pins: props.device.pins,
     });
+  };
+
+  const inputText = (
+    label: string,
+    val: string,
+    place: string,
+    setVal: (v: string) => void,
+    type: "text" | "url"
+  ) => {
+    return (
+      <IonItem>
+        <IonLabel position="floating">{label}</IonLabel>
+        <IonInput
+          type={type}
+          value={val}
+          placeholder={place}
+          onIonChange={(e) => setVal(e.detail.value!)}
+        ></IonInput>
+      </IonItem>
+    );
   };
 
   return (
     <IonContent>
-      <IonList>
-        <IonListHeader color="primary">
-          <IonCardTitle>Device</IonCardTitle>
-        </IonListHeader>
-        <IonItem>
-          <IonLabel position="stacked">Label</IonLabel>
-          <IonInput
-            type="text"
-            value={label}
-            placeholder="enter a label for the device"
-            onIonChange={(e) => setLabel(e.detail.value!)}
-          ></IonInput>
-        </IonItem>
-        <IonItem>
-          <IonLabel position="stacked">Model</IonLabel>
-          <IonInput
-            type="text"
-            value={model}
-            placeholder="enter a model for the device"
-            onIonChange={(e) => setModel(e.detail.value!)}
-          ></IonInput>
-        </IonItem>
-        <IonItem>
-          <IonLabel position="stacked">IP address</IonLabel>
-          <IonInput
-            type="text"
-            value={ip}
-            placeholder="enter an IP address for the device"
-            onIonChange={(e) => setIP(e.detail.value!)}
-          ></IonInput>
-        </IonItem>
-        <IonToolbar>
-          <IonButtons slot="end">
-            <IonButton
-              type="button"
-              color="primary"
-              onClick={props.close}
-            >
-              Cancel
+      <form>
+        <IonToolbar className="ion-padding-start">
+          <IonText
+            className="ion-align-items-start"
+            color="primary"
+          >
+            <h2>Device</h2>
+          </IonText>
+          <IonButtons
+            className="ion-align-items-end"
+            slot="primary"
+          >
+            <IonButton type="submit" onClick={onSubmit}>
+              <IonIcon
+                ios={checkmarkOutline}
+                md={checkmarkSharp}
+              />
             </IonButton>
-            <IonButton
-              type="button"
-              color="primary"
-              onClick={onSubmit}
-            >
-              Submit
+            <IonButton onClick={props.close}>
+              <IonIcon ios={closeOutline} md={closeSharp} />
             </IonButton>
           </IonButtons>
         </IonToolbar>
-        <PinUi pins={pins.current}></PinUi>
-      </IonList>
+        <IonSegment
+          className="ion-padding-horizontal"
+          value={segment}
+          onIonChange={(e) => setSegment(e.detail.value!)}
+        >
+          <IonSegmentButton value="device" color="white">
+            <IonLabel>General</IonLabel>
+          </IonSegmentButton>
+          <IonSegmentButton value="pins">
+            <IonLabel>Pin Usage</IonLabel>
+          </IonSegmentButton>
+        </IonSegment>
+        {segment === "pins" && (
+          <PinState pins={localPins}>
+            <PinUi />
+          </PinState>
+        )}
+        {segment === "device" && (
+          <IonList className="ion-padding-horizontal">
+            {inputText(
+              "Label",
+              label,
+              "enter a label",
+              setLabel,
+              "text"
+            )}
+            {inputText(
+              "Model",
+              model,
+              "the model type",
+              setModel,
+              "text"
+            )}
+            {inputText(
+              "URL",
+              ip,
+              "URL/IP Address",
+              setIP,
+              "url"
+            )}
+          </IonList>
+        )}
+      </form>
     </IonContent>
   );
 };

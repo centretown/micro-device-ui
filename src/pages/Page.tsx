@@ -6,11 +6,12 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  IonText,
 } from "@ionic/react";
 import React from "react";
 import { useParams } from "react-router";
-import DeviceUi from "../components/DeviceUi";
 import "./Page.css";
+import { DeviceUi } from "../components/DeviceUi";
 
 const Page: React.FC = () => {
   const { name } = useParams<{ name: string }>();
@@ -22,7 +23,9 @@ const Page: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>{name}</IonTitle>
+          <IonText color="primary">
+            <h1>{name}</h1>
+          </IonText>
         </IonToolbar>
       </IonHeader>
 

@@ -7,7 +7,6 @@
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.0.7",
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^8.0.3",
     "@types/jest": "^24.0.25",
     "@types/node": "^12.12.24",
@@ -16,7 +15,7 @@
     "@types/react-router": "^5.1.4",
     "@types/react-router-dom": "^5.1.3",
     "ionicons": "^5.0.0",
-    "micro-device-modules": "^1.0.4",
+    "micro-device-modules": "^1.0.8",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-router": "^5.1.2",
@@ -46,7 +45,8 @@
     ]
   },
   "devDependencies": {
-    "@capacitor/cli": "2.2.0"
+    "@capacitor/cli": "2.2.0",
+    "@testing-library/react": "^9.5.0"
   },
   "description": "An Ionic project"
 }

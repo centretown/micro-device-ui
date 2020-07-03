@@ -1,51 +1,55 @@
 import React, { useContext } from "react";
 
 import {
-    IonLabel,
-    IonCheckbox,
-    IonCol,
-    IonGrid,
-    IonNote,
+  IonLabel,
+  IonCheckbox,
+  IonCol,
+  IonGrid,
+  IonNote,
+  IonRow,
+  IonItem,
 } from "@ionic/react";
 
-import { Pin, pinKey, signalText } from "micro-device-modules/lib/pin";
+import {
+  Pin,
+  pinKey,
+  signalText,
+} from "micro-device-modules/lib/pin";
 
-import { ToggleContext } from "./PinUi"
+import { PinContext } from "../context/pin-context";
 
 interface pinProps {
-    pin: Pin;
+  pin: Pin;
 }
 
 const PinItem: React.FC<pinProps> = (p) => {
-    const toggle = useContext(ToggleContext);
+  const context = useContext(PinContext);
 
-    const onToggle = () => {
-        // console.log("toggle Pin");
-        toggle(pinKey(p.pin));
-    };
+  const onToggle = () => {
+    // console.log("toggle Pin");
+    context.toggle(context.pins.key(p.pin));
+  };
 
-    return (
-        <>
-            <IonGrid slot="start">
-                <IonCol>
-                    <IonLabel position="stacked" color="primary">
-                        {signalText(p.pin.digital)}: {p.pin.id}
-                    </IonLabel>
-                    <IonCheckbox
-                        // checked={p.selected}
-                        onIonChange={() => onToggle()}
-                    />
-                </IonCol>
-            </IonGrid>
-            <IonGrid slot="start">
-                <IonCol>
-                    <IonLabel position="stacked" color="primary">
-                        {p.pin.label}
-                    </IonLabel>
-                    <IonNote>{p.pin.purpose}</IonNote>
-                </IonCol>
-            </IonGrid>
-        </>
-    );
+  return (
+    <IonItem lines="full">
+      <IonGrid fixed>
+        <IonRow className="ion-align-items-center">
+          <IonCheckbox onIonChange={() => onToggle()} />
+          <IonCol size="2" className="ion-padding-start">
+            <IonLabel>Id: {p.pin.id}</IonLabel>
+          </IonCol>
+          <IonCol size="3">
+            <IonLabel>{signalText(p.pin.digital)}</IonLabel>
+          </IonCol>
+          <IonCol size="5">
+            <IonLabel>{p.pin.label}</IonLabel>
+          </IonCol>
+          <IonCol size="12">
+            <IonNote>{p.pin.purpose}</IonNote>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonItem>
+  );
 };
 export default PinItem;

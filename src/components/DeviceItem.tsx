@@ -6,39 +6,40 @@ import {
   IonCol,
   IonLabel,
   IonCheckbox,
+  IonItem,
 } from "@ionic/react";
 
-import { ToggleContext } from "./DeviceUi";
+import { DeviceContext } from "../context/device-context";
 
 interface deviceProps {
   device: Device;
-  deviceKey: string;
 }
 
 const DeviceItem: React.FC<deviceProps> = (d) => {
-  const toggle = useContext(ToggleContext);
+  const context = useContext(DeviceContext);
+  const deviceKey = context.devices.key(d.device);
 
   const onToggle = () => {
-    toggle(d.deviceKey);
+    context.toggle(context.devices.key(d.device));
   };
 
   return (
-    <IonGrid>
-      <IonRow>
-        <IonCol>
+    <IonItem lines="full">
+      <IonGrid>
+        <IonRow className="ion-align-items-center">
           <IonCheckbox onIonChange={() => onToggle()} />
-        </IonCol>
-        <IonCol>
-          <IonLabel>{d.device.label}</IonLabel>
-        </IonCol>
-        <IonCol>
-          <IonLabel>{d.device.model}</IonLabel>
-        </IonCol>
-        <IonCol>
-          <IonLabel>{d.device.ip}</IonLabel>
-        </IonCol>
-      </IonRow>
-    </IonGrid>
+          <IonCol size="4" push="1">
+            <IonLabel>{d.device.label}</IonLabel>
+          </IonCol>
+          <IonCol size="4" push="1">
+            <IonLabel>{d.device.model}</IonLabel>
+          </IonCol>
+          <IonCol size="12">
+            <IonLabel>{d.device.ip}</IonLabel>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
+    </IonItem>
   );
 };
 

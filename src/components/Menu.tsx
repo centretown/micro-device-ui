@@ -15,8 +15,6 @@ import {
   hardwareChipOutline,
   hardwareChipSharp,
   bookmarkOutline,
-  pinOutline,
-  pinSharp,
 } from "ionicons/icons";
 
 import "./Menu.css";
