@@ -11,6 +11,7 @@ export interface contextProps {
     removeSelected: () => void;
     toggle: (key: string) => void;
     replace: (list: Pin[]) => void;
+    key:(pin:Pin)=>string;
 };
 
 export const contextDefault: contextProps = {
@@ -23,6 +24,7 @@ export const contextDefault: contextProps = {
     removeSelected: () => { },
     toggle: (key: string) => { },
     replace: (list: Pin[]) => { },
+    key:(pin:Pin)=>"",
 };
 
 export const PinContext = React.createContext(contextDefault);

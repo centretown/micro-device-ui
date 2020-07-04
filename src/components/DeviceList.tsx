@@ -1,21 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { IonList } from "@ionic/react";
 import DeviceItem from "./DeviceItem";
-import { Device } from "micro-device-modules";
+import DeviceContext from "../context/device-context";
 
-export interface props {
-  keyf: (device: Device) => string;
-  list: Device[];
-}
-
-export const DeviceList: React.FC<props> = (d) => {
-  const sortedList = () =>
-    d.list.map((device) => {
-      return (
-        <DeviceItem key={d.keyf(device)} device={device} />
-      );
-    });
-  return <IonList>{sortedList()}</IonList>;
+export const DeviceList: React.FC = () => {
+  const context = useContext(DeviceContext);
+  return (
+    <IonList>
+      {context.list.map((device) => (
+        <DeviceItem key={context.key(device)} device={device} />
+      ))}
+    </IonList>
+  );
 };
 
 export default DeviceList;

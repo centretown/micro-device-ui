@@ -17,24 +17,22 @@ interface deviceProps {
 
 const DeviceItem: React.FC<deviceProps> = (d) => {
   const context = useContext(DeviceContext);
-  const deviceKey = context.devices.key(d.device);
-
-  const onToggle = () => {
-    context.toggle(context.devices.key(d.device));
-  };
-
   return (
     <IonItem lines="full">
       <IonGrid>
         <IonRow className="ion-align-items-center">
-          <IonCheckbox onIonChange={() => onToggle()} />
-          <IonCol size="4" push="1">
+          <IonCheckbox
+            onIonChange={() =>
+              context.toggle(context.key(d.device))
+            }
+          />
+          <IonCol size="6" sizeSm="6" push=".1">
             <IonLabel>{d.device.label}</IonLabel>
           </IonCol>
-          <IonCol size="4" push="1">
+          <IonCol sizeSm="6" push=".1">
             <IonLabel>{d.device.model}</IonLabel>
           </IonCol>
-          <IonCol size="12">
+          <IonCol sizeSm="12">
             <IonLabel>{d.device.ip}</IonLabel>
           </IonCol>
         </IonRow>

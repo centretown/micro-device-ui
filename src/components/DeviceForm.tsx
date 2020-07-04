@@ -1,27 +1,16 @@
 import React, { useState } from "react";
 import {
-  IonItem,
   IonLabel,
-  IonInput,
   IonContent,
-  IonButtons,
-  IonButton,
   IonSegment,
   IonSegmentButton,
-  IonIcon,
-  IonToolbar,
-  IonText,
   IonList,
 } from "@ionic/react";
 import { Device, PinSelectable } from "micro-device-modules";
 import PinUi from "./PinUi";
 import PinState from "../context/PinState";
-import {
-  checkmarkOutline,
-  checkmarkSharp,
-  closeOutline,
-  closeSharp,
-} from "ionicons/icons";
+import FormHeading from "./FormHeading";
+import { TextInputItem } from "./InputItem";
 
 export interface DeviceFormProps {
   device: Device;
@@ -48,94 +37,57 @@ const DeviceForm: React.FC<DeviceFormProps> = (props) => {
     });
   };
 
-  const inputText = (
-    label: string,
-    val: string,
-    place: string,
-    setVal: (v: string) => void,
-    type: "text" | "url"
-  ) => {
-    return (
-      <IonItem>
-        <IonLabel position="floating">{label}</IonLabel>
-        <IonInput
-          type={type}
-          value={val}
-          placeholder={place}
-          onIonChange={(e) => setVal(e.detail.value!)}
-        ></IonInput>
-      </IonItem>
-    );
-  };
-
   return (
     <IonContent>
-      <form>
-        <IonToolbar className="ion-padding-start">
-          <IonText
-            className="ion-align-items-start"
-            color="primary"
-          >
-            <h2>Device</h2>
-          </IonText>
-          <IonButtons
-            className="ion-align-items-end"
-            slot="primary"
-          >
-            <IonButton type="submit" onClick={onSubmit}>
-              <IonIcon
-                ios={checkmarkOutline}
-                md={checkmarkSharp}
-              />
-            </IonButton>
-            <IonButton onClick={props.close}>
-              <IonIcon ios={closeOutline} md={closeSharp} />
-            </IonButton>
-          </IonButtons>
-        </IonToolbar>
-        <IonSegment
-          className="ion-padding-horizontal"
-          value={segment}
-          onIonChange={(e) => setSegment(e.detail.value!)}
-        >
-          <IonSegmentButton value="device" color="white">
-            <IonLabel>General</IonLabel>
-          </IonSegmentButton>
-          <IonSegmentButton value="pins">
-            <IonLabel>Pin Usage</IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
-        {segment === "pins" && (
-          <PinState pins={localPins}>
-            <PinUi />
-          </PinState>
-        )}
-        {segment === "device" && (
-          <IonList className="ion-padding-horizontal">
-            {inputText(
-              "Label",
-              label,
-              "enter a label",
-              setLabel,
-              "text"
-            )}
-            {inputText(
-              "Model",
-              model,
-              "the model type",
-              setModel,
-              "text"
-            )}
-            {inputText(
-              "URL",
-              ip,
-              "URL/IP Address",
-              setIP,
-              "url"
-            )}
-          </IonList>
-        )}
-      </form>
+      <FormHeading
+        title="Device"
+        onSubmit={onSubmit}
+        onClose={props.close}
+      ></FormHeading>
+
+      <IonSegment
+        className="ion-padding-horizontal"
+        value={segment}
+        onIonChange={(e) => setSegment(e.detail.value!)}
+      >
+        <IonSegmentButton value="device" color="white">
+          <IonLabel>General</IonLabel>
+        </IonSegmentButton>
+        <IonSegmentButton value="pins">
+          <IonLabel>Pin Usage</IonLabel>
+        </IonSegmentButton>
+      </IonSegment>
+
+      {segment === "pins" && (
+        <PinState pins={localPins}>
+          <PinUi />
+        </PinState>
+      )}
+      {segment === "device" && (
+        <IonList className="ion-padding-horizontal">
+          <TextInputItem
+            type="text"
+            label="Label"
+            value={label}
+            place="enter a label"
+            set={setLabel}
+          />
+          <TextInputItem
+            type="text"
+            label="Model"
+            value={model}
+            place="the model type"
+            set={setModel}
+          />
+          <TextInputItem
+            type="url"
+            label="URL"
+            value={ip}
+            place="URL/IP Address"
+            set={setIP}
+          />
+        </IonList>
+      )}
     </IonContent>
   );
 };

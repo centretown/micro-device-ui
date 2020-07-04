@@ -10,11 +10,7 @@ import {
   IonItem,
 } from "@ionic/react";
 
-import {
-  Pin,
-  pinKey,
-  signalText,
-} from "micro-device-modules/lib/pin";
+import { Pin } from "micro-device-modules";
 
 import { PinContext } from "../context/pin-context";
 
@@ -24,22 +20,22 @@ interface pinProps {
 
 const PinItem: React.FC<pinProps> = (p) => {
   const context = useContext(PinContext);
-
-  const onToggle = () => {
-    // console.log("toggle Pin");
-    context.toggle(context.pins.key(p.pin));
-  };
-
   return (
     <IonItem lines="full">
       <IonGrid fixed>
         <IonRow className="ion-align-items-center">
-          <IonCheckbox onIonChange={() => onToggle()} />
+          <IonCheckbox
+            onIonChange={() =>
+              context.toggle(context.key(p.pin))
+            }
+          />
           <IonCol size="2" className="ion-padding-start">
             <IonLabel>Id: {p.pin.id}</IonLabel>
           </IonCol>
           <IonCol size="3">
-            <IonLabel>{signalText(p.pin.digital)}</IonLabel>
+            <IonLabel>
+              {p.pin.digital ? "digital" : "analog"}
+            </IonLabel>
           </IonCol>
           <IonCol size="5">
             <IonLabel>{p.pin.label}</IonLabel>

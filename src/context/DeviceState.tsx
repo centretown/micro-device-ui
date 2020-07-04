@@ -31,7 +31,7 @@ export const DeviceState = (p: props) => {
   return (
     <DeviceContext.Provider
       value={{
-        devices: p.devices,
+        // devices: p.devices,
         list: state.list,
         item: state.item,
         newDevice: () => {
@@ -49,6 +49,9 @@ export const DeviceState = (p: props) => {
             devices: p.devices,
             device: device,
           });
+        },
+        key: (device: Device) => {
+          return p.devices.key(device);
         },
         removeSelected: () => {
           dispatch({

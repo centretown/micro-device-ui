@@ -55,10 +55,7 @@ export const DeviceUi: React.FC = () => {
         vertical="bottom"
         horizontal="end"
       />
-      <DeviceList
-        keyf={context.devices.key}
-        list={context.list}
-      ></DeviceList>
+      <DeviceList></DeviceList>
     </>
   );
 };

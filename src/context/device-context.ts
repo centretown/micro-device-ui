@@ -1,8 +1,7 @@
 import React from 'react';
-import { DeviceStoreable, Device } from 'micro-device-modules'
+import { Device } from 'micro-device-modules'
 
 interface deviceContext {
-    devices: DeviceStoreable;
     list: Device[];
     item: Device;
     newDevice: () => void;
@@ -10,10 +9,10 @@ interface deviceContext {
     put: (device: Device) => void;
     removeSelected: () => void;
     toggle: (key: string) => void;
+    key: (device: Device) => string;
 };
 
 const deviceDefaultContext: deviceContext = {
-    devices: new DeviceStoreable(),
     list: [],
     item: {} as Device,
     getFirstSelection: () => { },
@@ -21,6 +20,7 @@ const deviceDefaultContext: deviceContext = {
     put: (device: Device) => { },
     removeSelected: () => { },
     toggle: (key: string) => { },
+    key: (device: Device) => "",
 };
 
 export const DeviceContext = React.createContext(deviceDefaultContext);

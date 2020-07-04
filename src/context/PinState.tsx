@@ -58,6 +58,9 @@ export const PinState = (p: props) => {
             key: key,
           });
         },
+        key: (pin: Pin) => {
+          return p.pins.key(pin);
+        },
       }}
     >
       {p.children}
