@@ -63,6 +63,3 @@ export const createItemStoreContext = <T>(): ItemStoreContext<T> => {
         }
     }
 }
-
-export const ProcessContext =
-    React.createContext(createItemStoreContext<Process>());

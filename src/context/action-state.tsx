@@ -8,7 +8,10 @@ import { itemSelect } from './item-state';
 export const ActionContext =
     React.createContext(createItemContext<Action>());
 
-export const actionReducer = (state: ItemState<Action>, action: SelectAction<Action>) => {
+export const actionReducer = (
+    state: ItemState<Action>,
+    action: SelectAction<Action>) => {
+
     return itemReducer(state, action);
 }
 
