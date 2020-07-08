@@ -15,7 +15,6 @@ export interface pinState {
 export const defaultPin: Pin = {
     id: 0,
     label: "Pin #",
-    digital: true,
     purpose: "",
 }
 interface newAction {

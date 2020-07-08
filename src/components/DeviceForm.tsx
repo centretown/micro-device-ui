@@ -58,11 +58,6 @@ const DeviceForm: React.FC<DeviceFormProps> = (props) => {
         </IonSegmentButton>
       </IonSegment>
 
-      {segment === "pins" && (
-        <PinState pins={localPins}>
-          <PinUi />
-        </PinState>
-      )}
       {segment === "device" && (
         <IonList className="ion-padding-horizontal">
           <TextInputItem
@@ -87,6 +82,11 @@ const DeviceForm: React.FC<DeviceFormProps> = (props) => {
             set={setIP}
           />
         </IonList>
+      )}
+      {segment === "pins" && (
+        <PinState pins={localPins}>
+          <PinUi />
+        </PinState>
       )}
     </IonContent>
   );

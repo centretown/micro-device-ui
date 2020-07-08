@@ -32,11 +32,6 @@ const PinItem: React.FC<pinProps> = (p) => {
           <IonCol size="2" className="ion-padding-start">
             <IonLabel>Id: {p.pin.id}</IonLabel>
           </IonCol>
-          <IonCol size="3">
-            <IonLabel>
-              {p.pin.digital ? "digital" : "analog"}
-            </IonLabel>
-          </IonCol>
           <IonCol size="5">
             <IonLabel>{p.pin.label}</IonLabel>
           </IonCol>

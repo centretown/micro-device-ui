@@ -23,11 +23,9 @@ const PinForm: React.FC<PinFormProps> = (props) => {
   const [id, setId] = useState(props.pin.id);
   const [label, setLabel] = useState(props.pin.label);
   const [purpose, setPurpose] = useState(props.pin.purpose);
-  const [digital, setDigital] = useState(props.pin.digital);
 
   const onSubmit = () => {
     props.submit({
-      digital: digital,
       id: id,
       label: label,
       purpose: purpose,
@@ -51,26 +49,6 @@ const PinForm: React.FC<PinFormProps> = (props) => {
                 placeholder="enter the device pin number"
                 onIonChange={(e) => setId(+e.detail.value!)}
               />
-            </InputItem>
-          </IonCol>
-          <IonCol size="6">
-            <InputItem label="Signal">
-              <IonSelect
-                interface="popover"
-                value={digital ? "digital" : "analog"}
-                onIonChange={(e) => {
-                  if (e.detail.value === "digital")
-                    setDigital(true);
-                  else setDigital(false);
-                }}
-              >
-                <IonSelectOption value="digital">
-                  Digital
-                </IonSelectOption>
-                <IonSelectOption value="analog">
-                  Analog
-                </IonSelectOption>
-              </IonSelect>
             </InputItem>
           </IonCol>
           <IonCol size="6">

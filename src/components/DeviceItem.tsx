@@ -22,17 +22,18 @@ const DeviceItem: React.FC<deviceProps> = (d) => {
       <IonGrid>
         <IonRow className="ion-align-items-center">
           <IonCheckbox
+            className="ion-margin-end"
             onIonChange={() =>
               context.toggle(context.key(d.device))
             }
           />
-          <IonCol size="6" sizeSm="6" push=".1">
+          <IonCol size="4">
             <IonLabel>{d.device.label}</IonLabel>
           </IonCol>
-          <IonCol sizeSm="6" push=".1">
+          <IonCol size="5">
             <IonLabel>{d.device.model}</IonLabel>
           </IonCol>
-          <IonCol sizeSm="12">
+          <IonCol size="12">
             <IonLabel>{d.device.ip}</IonLabel>
           </IonCol>
         </IonRow>

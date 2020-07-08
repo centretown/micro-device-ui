@@ -54,7 +54,7 @@ const PinUi: React.FC = () => {
         vertical="bottom"
         horizontal="end"
       />
-      <PinList keyf={context.pins.key} list={context.list} />
+      <PinList keyf={context.key} list={context.list} />
     </>
   );
 };

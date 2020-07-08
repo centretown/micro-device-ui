@@ -26,7 +26,6 @@ export const PinState = (p: props) => {
   return (
     <PinContext.Provider
       value={{
-        pins: p.pins,
         list: state.list,
         item: state.item,
         newPin: () => {

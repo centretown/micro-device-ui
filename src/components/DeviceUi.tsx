@@ -1,5 +1,9 @@
 import React, { useState, useContext } from "react";
 import { IonModal } from "@ionic/react";
+import {
+  hardwareChipOutline,
+  hardwareChipSharp,
+} from "ionicons/icons";
 
 import { Device } from "micro-device-modules";
 import DeviceList from "./DeviceList";
