@@ -1,5 +1,5 @@
 import React from 'react';
-import { PinSelectable, Pin } from 'micro-device-modules'
+import { Pin } from 'micro-device-modules'
 
 export interface contextProps {
     list: Pin[];

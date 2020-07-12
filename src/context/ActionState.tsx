@@ -2,7 +2,7 @@
 import { createItemContext } from './item-context'
 import React, { useReducer } from 'react';
 import { Action, ActionSelectable } from 'micro-device-modules';
-import { ItemState, itemReducer, SelectAction, NEW } from './item-reducer';
+import { ItemState, itemReducer, SelectAction } from './item-reducer';
 import { itemSelect } from './item-state';
 
 export const ActionContext =
@@ -12,13 +12,7 @@ export const actionReducer = (
     state: ItemState<Action>,
     action: SelectAction<Action>) => {
 
-    return itemReducer(state, action);
-}
-
-const defaultAction: Action = {
-    sequence: 0,
-    action: '',
-    type: ''
+    return itemReducer<Action>(state, action);
 }
 
 interface props {
@@ -29,7 +23,7 @@ interface props {
 export const ActionState = (p: props) => {
     const [state, dispatch] = useReducer(actionReducer, {
         list: p.actions.sort(),
-        item: defaultAction
+        item: p.actions.newItem(),
     });
     return (
         <ActionContext.Provider

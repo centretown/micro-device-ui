@@ -1,5 +1,5 @@
 import React from "react";
-import { IonItem, IonLabel, IonInput } from "@ionic/react";
+import { IonItem, IonLabel, IonInput, IonSelectOption, IonSelect } from "@ionic/react";
 
 interface props {
   type: "text" | "url";
@@ -35,4 +35,27 @@ export const InputItem: React.FC<inputProps> = (p) => {
   );
 };
 
-interface props {}
+interface selectProps {
+  label: string,
+  options: { label: string, value: string }[],
+  value: string,
+  setValue: (value: any) => void;
+}
+export const SelectItem: React.FC<selectProps> = (p) => {
+  return (
+    <InputItem label={p.label}>
+      <IonSelect
+        interface="popover"
+        value={p.value}
+        onIonChange={(e) => p.setValue(e.detail.value)}
+      >
+        {p.options.map((o) => {
+          return (
+            <IonSelectOption key={o.value} value={o.value}>
+              {o.label}
+            </IonSelectOption>);
+        })}
+      </IonSelect>
+    </InputItem>
+  );
+};

@@ -27,29 +27,34 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
-import { DeviceStoreable } from "micro-device-modules";
+import { DeviceStoreable, ProcessStoreable } from "micro-device-modules";
 import DeviceState from "./context/DeviceState";
+import { ProcessState } from "./context/ProcessState";
 
 const App: React.FC = () => {
   const devices = new DeviceStoreable();
   devices.load();
+  const processes = new ProcessStoreable();
+  processes.load();
   return (
     <DeviceState devices={devices}>
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            <Menu />
-            <IonRouterOutlet id="main">
-              <Route
-                path="/page/:name"
-                component={Page}
-                exact
-              />
-              <Redirect from="/" to="/page/Devices" exact />
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
+      <ProcessState processes={processes}>
+        <IonApp>
+          <IonReactRouter>
+            <IonSplitPane contentId="main">
+              <Menu />
+              <IonRouterOutlet id="main">
+                <Route
+                  path="/page/:name"
+                  component={Page}
+                  exact
+                />
+                <Redirect from="/" to="/page/Devices" exact />
+              </IonRouterOutlet>
+            </IonSplitPane>
+          </IonReactRouter>
+        </IonApp>
+      </ProcessState>
     </DeviceState>
   );
 };

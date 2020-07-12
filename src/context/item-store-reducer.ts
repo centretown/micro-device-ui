@@ -36,13 +36,15 @@ export const itemStoreReducer = <T>(
     action: ItemStoreAction<T>,
 ) => {
     const newState: ItemState<T> = { list: state.list, item: state.item };
-    switch (action.store.type) {
-        case SAVE:
-            return save<T>(action.store, newState);
-        case LOAD:
-            return load<T>(action.store, newState);
-        default:
-            return itemReducer(state, action);
+    if (action.store) {
+        switch (action.store.type) {
+            case SAVE:
+                return save<T>(action.store, newState);
+            case LOAD:
+                return load<T>(action.store, newState);
+        }
+    } else {
+        return itemReducer(state, action);
     }
 }
 

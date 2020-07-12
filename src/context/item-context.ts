@@ -1,7 +1,3 @@
-import React from 'react';
-import { Action, Process, SelectableList } from 'micro-device-modules'
-import { SelectAction, ItemState } from './item-reducer';
-
 export interface ItemBase<T> {
     newItem: () => void;
     getFirstSelection: () => void;

@@ -30,7 +30,7 @@ export interface newAction<T> {
     items: SelectableList<T>;
 }
 const newItem = <T>(action: newAction<T>, state: ItemState<T>) => {
-    state.item = defaultItem;
+    state.item = action.items.newItem();
     return state;
 }
 

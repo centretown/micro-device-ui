@@ -5,8 +5,6 @@ import {
   IonGrid,
   IonRow,
   IonCol,
-  IonSelect,
-  IonSelectOption,
   IonTextarea,
 } from "@ionic/react";
 import { Pin } from "micro-device-modules/lib/pin";

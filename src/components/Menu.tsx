@@ -15,15 +15,24 @@ import {
   hardwareChipOutline,
   hardwareChipSharp,
   bookmarkOutline,
+  funnelOutline,
+  funnelSharp,
 } from "ionicons/icons";
 
 import "./Menu.css";
 
-interface AppPage {
+export interface AppPage {
   url: string;
   iosIcon: string;
   mdIcon: string;
   title: string;
+}
+
+export const appPage: AppPage = {
+  url: '',
+  iosIcon: '',
+  mdIcon: '',
+  title: '',
 }
 
 const appPages: AppPage[] = [
@@ -32,6 +41,12 @@ const appPages: AppPage[] = [
     url: "/page/Devices",
     iosIcon: hardwareChipOutline,
     mdIcon: hardwareChipSharp,
+  },
+  {
+    title: "Processes",
+    url: "/page/Processes",
+    iosIcon: funnelOutline,
+    mdIcon: funnelSharp,
   },
 ];
 
@@ -43,7 +58,7 @@ const Menu: React.FC = () => {
   return (
     <IonMenu contentId="main" type="overlay">
       <IonContent>
-        <IonList id="inbox-list">
+        <IonList id="menu-list">
           <IonListHeader>Controller</IonListHeader>
           {appPages.map((appPage, index) => {
             return (
