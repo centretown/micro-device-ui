@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
+import { IonModal } from "@ionic/react";
+
+import { Action } from "micro-device-modules";
+
+import ActionList from "./ActionList";
+import EditMenu from "./EditMenu";
+import { ActionForm } from "./ActionForm";
 
 import { ActionContext } from '../context/ActionState';
 import { itemUi } from "./item-ui";
-import EditMenu from "./EditMenu";
-import { IonModal } from "@ionic/react";
-import { Action } from "micro-device-modules";
-import ActionList from "./ActionList";
-import { ActionForm } from "./ActionForm";
 
 export const ActionUi: React.FC = () => {
     const [modal, setModal] = useState(false);

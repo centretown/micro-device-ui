@@ -1,5 +1,5 @@
 import React from "react";
-import { IonItem, IonLabel, IonInput, IonSelectOption, IonSelect } from "@ionic/react";
+import { IonItem, IonLabel, IonInput, IonSelectOption, IonSelect, IonSegment, IonSegmentButton } from "@ionic/react";
 
 interface props {
   type: "text" | "url";
@@ -57,5 +57,27 @@ export const SelectItem: React.FC<selectProps> = (p) => {
         })}
       </IonSelect>
     </InputItem>
+  );
+};
+
+interface segmentProps {
+  segment: string,
+  setSegment: (value: any) => void;
+  options: { label: string, value: string }[],
+}
+export const SegmentItem: React.FC<segmentProps> = (p) => {
+  return (
+    <IonSegment
+      className="ion-padding-horizontal"
+      value={p.segment}
+      onIonChange={(e) => p.setSegment(e.detail.value!)}
+    >
+      {p.options.map((o) => {
+        return (
+          <IonSegmentButton key={o.value} value={o.value} color="white">
+            {o.label}
+          </IonSegmentButton>);
+      })}
+    </IonSegment>
   );
 };

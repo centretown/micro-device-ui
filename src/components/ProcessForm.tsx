@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { IonContent, IonSegment, IonSegmentButton, IonLabel, IonList, IonTextarea } from "@ionic/react";
-import FormHeading from "./FormHeading";
-import { TextInputItem, InputItem } from "./InputItem";
 import { Process, ActionSelectable } from "micro-device-modules";
+
+import FormHeading from "./FormHeading";
+import { TextInputItem, InputItem, SegmentItem } from "./InputItem";
 import { ActionState } from "../context/ActionState";
 import { ActionUi } from "./ActionUi";
 
@@ -14,27 +15,27 @@ interface ProcessFormProps {
 
 export const ProcessForm: React.FC<ProcessFormProps> = (p) => {
 
-    const setupActions: ActionSelectable = new ActionSelectable();
-    setupActions.putList(p.process.setup.getAll());
-    const loopActions: ActionSelectable = new ActionSelectable();
-    loopActions.putList(p.process.loop.getAll());
-
     const [deviceKey, setDeviceKey] = useState(p.process.deviceKey);
     const [label, setLabel] = useState(p.process.label);
     const [purpose, setPurpose] = useState(p.process.purpose);
+    const setup = useRef(p.process.setup);
+    const loop = useRef(p.process.loop);
 
     const [segment, setSegment] = useState("basic");
 
     const onSubmit = () => {
-        p.process.setup.replace(setupActions.sort());
-        p.process.loop.replace(loopActions.sort());
-        p.submit({
+        console.log(setup.current);
+        const process: Process = {
             deviceKey: deviceKey,
             label: label,
             purpose: purpose,
-            setup: p.process.setup,
-            loop: p.process.loop,
-        });
+            setup: new ActionSelectable(),
+            loop: new ActionSelectable(),
+        }
+        process.setup.replace(setup.current.getAll());
+        process.loop.replace(loop.current.getAll());
+        console.log(process);
+        p.submit(process);
     }
     return (
         <IonContent>
@@ -42,22 +43,16 @@ export const ProcessForm: React.FC<ProcessFormProps> = (p) => {
                 title="Process"
                 onSubmit={onSubmit}
                 onClose={p.close}
-            ></FormHeading>
-            <IonSegment
-                className="ion-padding-horizontal"
-                value={segment}
-                onIonChange={(e) => setSegment(e.detail.value!)}
-            >
-                <IonSegmentButton value="basic" color="white">
-                    <IonLabel>Basic</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="setup">
-                    <IonLabel>Setup</IonLabel>
-                </IonSegmentButton>
-                <IonSegmentButton value="loop">
-                    <IonLabel>Loop</IonLabel>
-                </IonSegmentButton>
-            </IonSegment>
+            />
+            <SegmentItem
+                segment={segment}
+                setSegment={setSegment}
+                options={[
+                    { value: "basic", label: "Basic" },
+                    { value: "setup", label: "Setup" },
+                    { value: "loop", label: "Loop" },
+                ]} />
+
             {segment === "basic" && (
                 <IonList className="ion-padding-horizontal">
                     <TextInputItem
@@ -85,12 +80,12 @@ export const ProcessForm: React.FC<ProcessFormProps> = (p) => {
                 </IonList>
             )}
             {segment === "setup" && (
-                <ActionState actions={setupActions}>
+                <ActionState actions={setup.current}>
                     <ActionUi />
                 </ActionState>
             )}
             {segment === "loop" && (
-                <ActionState actions={loopActions}>
+                <ActionState actions={loop.current}>
                     <ActionUi />
                 </ActionState>
             )}

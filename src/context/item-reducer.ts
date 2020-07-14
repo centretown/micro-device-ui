@@ -1,5 +1,7 @@
-import { SelectableList } from "micro-device-modules"
+import { SelectableList, StoreableList } from "micro-device-modules"
 
+export const SAVE = 'SAVE';
+export const LOAD = 'LOAD';
 export const PUT = 'PUT';
 export const PUT_LIST = 'PUT_LIST';
 export const REMOVE_SELECTED = 'REMOVE_SELECTED';
@@ -22,9 +24,6 @@ export interface SelectAction<T> {
     getAction<T> |
     newAction<T>
 }
-
-export const defaultItem: any = {};
-
 export interface newAction<T> {
     type: 'NEW';
     items: SelectableList<T>;
@@ -40,7 +39,7 @@ export interface getAction<T> {
 }
 const selectedItems = <T>(action: getAction<T>, state: ItemState<T>) => {
     const l = action.items.getSelected();
-    state.item = (l.length > 0) ? l[0] : defaultItem;
+    state.item = (l.length > 0) ? l[0] : action.items.newItem();
     return state;
 }
 
@@ -97,9 +96,44 @@ const toggle = <T>(action: toggleAction<T>, state: ItemState<T>) => {
     return state;
 }
 
+export interface StoreAction<T> {
+    store: saveAction<T> |
+    loadAction<T>
+}
+export interface ItemStoreAction<T> extends SelectAction<T>, StoreAction<T> {
+}
+
+export interface saveAction<T> {
+    type: 'SAVE',
+    items: StoreableList<T>,
+}
+const save = <T>(action: saveAction<T>, state: ItemState<T>) => {
+    action.items.save();
+    return state;
+}
+
+export interface loadAction<T> {
+    type: 'LOAD',
+    items: StoreableList<T>,
+}
+const load = <T>(action: loadAction<T>, state: ItemState<T>) => {
+    action.items.load();
+    state.list = action.items.sort();
+    return state;
+}
+
+export interface StoreAction<T> {
+    store: saveAction<T> |
+    loadAction<T>
+}
+
+export interface ItemStoreAction<T> extends SelectAction<T>, StoreAction<T> {
+}
+
+
 export const itemReducer = <T>(
     state: ItemState<T>,
-    action: SelectAction<T>,
+    action: SelectAction<T> | ItemStoreAction<T>,
 ) => {
     const newState: ItemState<T> = { list: state.list, item: state.item };
     switch (action.select.type) {
@@ -118,6 +152,20 @@ export const itemReducer = <T>(
         case REPLACE:
             return replace<T>(action.select, newState);
         default:
-            return state;
+            break;
     }
+
+    const actionStore = action as ItemStoreAction<T>;
+    if (actionStore.store) {
+        switch (actionStore.store.type) {
+            case SAVE:
+                return save<T>(actionStore.store, newState);
+            case LOAD:
+                return load<T>(actionStore.store, newState);
+            default:
+                break;
+        }
+    }
+
+    return state;
 }

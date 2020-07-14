@@ -1,14 +1,14 @@
 import React, { useContext } from "react";
 import { IonList } from "@ionic/react";
 import DeviceItem from "./DeviceItem";
-import DeviceContext from "../context/device-context";
+import { GlobalContext } from "../context/GlobalState";
 
 export const DeviceList: React.FC = () => {
-  const context = useContext(DeviceContext);
+  const context = useContext(GlobalContext);
   return (
     <IonList>
-      {context.list.map((device) => (
-        <DeviceItem key={context.key(device)} device={device} />
+      {context.device.list.map((device) => (
+        <DeviceItem key={context.device.select.key(device)} device={device} />
       ))}
     </IonList>
   );

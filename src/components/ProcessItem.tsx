@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
     IonCol,
     IonLabel,
 } from "@ionic/react";
 
-import { ProcessContext } from "../context/ProcessState";
+import { GlobalContext } from "../context/GlobalState";
 import { Process } from "micro-device-modules";
 import { ItemTemplate } from "./ItemTemplate";
 
@@ -13,11 +13,11 @@ interface processProps {
 }
 
 export const ProcessItem: React.FC<processProps> = (p) => {
-    const context = useContext(ProcessContext);
+    const context = useContext(GlobalContext);
     return (
         <ItemTemplate
-            keyValue={context.select.key(p.process)}
-            toggle={context.select.toggle}>
+            keyValue={context.process.select.key(p.process)}
+            toggle={context.process.select.toggle}>
 
             <IonCol size="4">
                 <IonLabel>{p.process.label}</IonLabel>

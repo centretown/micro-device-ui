@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   IonLabel,
   IonContent,
@@ -10,7 +10,7 @@ import { Device, PinSelectable } from "micro-device-modules";
 import PinUi from "./PinUi";
 import PinState from "../context/PinState";
 import FormHeading from "./FormHeading";
-import { TextInputItem } from "./InputItem";
+import { TextInputItem, SegmentItem } from "./InputItem";
 
 export interface DeviceFormProps {
   device: Device;
@@ -18,22 +18,20 @@ export interface DeviceFormProps {
   close: () => void;
 }
 
-const DeviceForm: React.FC<DeviceFormProps> = (props) => {
-  const localPins: PinSelectable = new PinSelectable();
-  localPins.putList(props.device.pins.getAll());
+const DeviceForm: React.FC<DeviceFormProps> = (p) => {
 
-  const [label, setLabel] = useState(props.device.label);
-  const [model, setModel] = useState(props.device.model);
-  const [ip, setIP] = useState(props.device.ip);
-  const [segment, setSegment] = useState("device");
+  const [label, setLabel] = useState(p.device.label);
+  const [model, setModel] = useState(p.device.model);
+  const [ip, setIP] = useState(p.device.ip);
+  const pins = useRef(p.device.pins);
+  const [segment, setSegment] = useState("basic");
 
   const onSubmit = () => {
-    props.device.pins.replace(localPins.sort());
-    props.submit({
+    p.submit({
       ip: ip,
       model: model,
       label: label,
-      pins: props.device.pins,
+      pins: pins.current,
     });
   };
 
@@ -42,23 +40,17 @@ const DeviceForm: React.FC<DeviceFormProps> = (props) => {
       <FormHeading
         title="Device"
         onSubmit={onSubmit}
-        onClose={props.close}
-      ></FormHeading>
+        onClose={p.close}
+      />
+      <SegmentItem
+        segment={segment}
+        setSegment={setSegment}
+        options={[
+          { value: "basic", label: "Basic" },
+          { value: "pins", label: "Pin Use" }
+        ]} />
 
-      <IonSegment
-        className="ion-padding-horizontal"
-        value={segment}
-        onIonChange={(e) => setSegment(e.detail.value!)}
-      >
-        <IonSegmentButton value="device" color="white">
-          <IonLabel>General</IonLabel>
-        </IonSegmentButton>
-        <IonSegmentButton value="pins">
-          <IonLabel>Pin Usage</IonLabel>
-        </IonSegmentButton>
-      </IonSegment>
-
-      {segment === "device" && (
+      {segment === "basic" && (
         <IonList className="ion-padding-horizontal">
           <TextInputItem
             type="text"
@@ -84,7 +76,7 @@ const DeviceForm: React.FC<DeviceFormProps> = (props) => {
         </IonList>
       )}
       {segment === "pins" && (
-        <PinState pins={localPins}>
+        <PinState pins={pins.current}>
           <PinUi />
         </PinState>
       )}

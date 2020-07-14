@@ -2,15 +2,15 @@ import React, { useContext } from "react";
 import { IonList } from "@ionic/react";
 
 import ProcessItem from "./ProcessItem";
-import { ProcessContext } from "../context/ProcessState";
+import { GlobalContext } from "../context/GlobalState";
 
 export const ProcessList: React.FC = () => {
-    const context = useContext(ProcessContext);
+    const context = useContext(GlobalContext);
     return (
         <IonList>
-            {context.list.map((process) => (
+            {context.process.list.map((process) => (
                 <ProcessItem
-                    key={context.select.key(process)} process={process} />
+                    key={context.process.select.key(process)} process={process} />
             ))}
         </IonList>
     );

@@ -1,17 +1,18 @@
-import React, { useReducer } from "react";
 
-import { PinContext } from "./pin-context";
-import { PinSelectable, Pin } from "micro-device-modules";
-import {
-  pinReducer,
-  REMOVE_SELECTED_PINS,
-  SELECTED_PIN,
-  TOGGLE_PIN,
-  PUT_PIN,
-  NEW_PIN,
-  defaultPin,
-  REPLACE_PINS,
-} from "./pin-reducer";
+import React, { useReducer } from 'react';
+import { Pin, PinSelectable } from 'micro-device-modules';
+import { createItemContext } from './item-context'
+import { ItemState, itemReducer, SelectAction } from './item-reducer';
+import { itemSelect } from './item-state';
+
+export const PinContext =
+  React.createContext(createItemContext<Pin>());
+
+export const pinReducer = (
+  state: ItemState<Pin>,
+  action: SelectAction<Pin>) => {
+  return itemReducer<Pin>(state, action);
+};
 
 interface props {
   pins: PinSelectable;
@@ -21,50 +22,17 @@ interface props {
 export const PinState = (p: props) => {
   const [state, dispatch] = useReducer(pinReducer, {
     list: p.pins.sort(),
-    item: defaultPin,
+    item: p.pins.newItem(),
   });
   return (
     <PinContext.Provider
-      value={{
-        list: state.list,
-        item: state.item,
-        newPin: () => {
-          dispatch({ type: NEW_PIN, pins: p.pins });
-        },
-        getFirstSelection: () => {
-          dispatch({ type: SELECTED_PIN, pins: p.pins });
-        },
-        put: (pin: Pin) => {
-          dispatch({ type: PUT_PIN, pins: p.pins, pin: pin });
-        },
-        replace: (list: Pin[]) => {
-          dispatch({
-            type: REPLACE_PINS,
-            pins: p.pins,
-            list: list,
-          });
-        },
-        removeSelected: () => {
-          dispatch({
-            type: REMOVE_SELECTED_PINS,
-            pins: p.pins,
-          });
-        },
-        toggle: (key: string) => {
-          dispatch({
-            type: TOGGLE_PIN,
-            pins: p.pins,
-            key: key,
-          });
-        },
-        key: (pin: Pin) => {
-          return p.pins.key(pin);
-        },
-      }}
-    >
+      value={
+        itemSelect<Pin, PinSelectable>(p.pins, state, dispatch)
+      }>
       {p.children}
+
     </PinContext.Provider>
   );
-};
+}
 
 export default PinState;

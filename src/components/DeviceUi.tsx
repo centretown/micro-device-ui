@@ -5,53 +5,31 @@ import { Device } from "micro-device-modules";
 import DeviceList from "./DeviceList";
 import EditMenu from "./EditMenu";
 import DeviceForm from "./DeviceForm";
-import { DeviceContext } from "../context/device-context";
+import { GlobalContext } from "../context/GlobalState";
+import { itemUi } from "./item-ui";
 
 export const DeviceUi: React.FC = () => {
-  const context = useContext(DeviceContext);
+  const context = useContext(GlobalContext);
   const [modal, setModal] = useState(false);
-
-  const addClicked = () => {
-    context.newDevice();
-    setModal(true);
-  };
-
-  const editClicked = () => {
-    context.getFirstSelection();
-    setModal(true);
-  };
-
-  const removeClicked = () => {
-    context.removeSelected();
-  };
-
-  const close = () => {
-    setModal(false);
-  };
-
-  const submit = (d: Device) => {
-    close();
-    context.put(d);
-  };
-
+  const p = itemUi<Device>(context.device, setModal);
   return (
     <>
       <IonModal
         isOpen={modal}
         swipeToClose={true}
-        onDidDismiss={() => close()}
+        onDidDismiss={() => p.close()}
       >
         <DeviceForm
-          device={context.item}
-          close={() => close()}
-          submit={submit}
+          device={context.device.item}
+          close={() => p.close()}
+          submit={p.submit}
         />
       </IonModal>
 
       <EditMenu
-        add={addClicked}
-        remove={removeClicked}
-        edit={editClicked}
+        add={p.addClicked}
+        remove={p.removeClicked}
+        edit={p.editClicked}
         vertical="bottom"
         horizontal="end"
       />

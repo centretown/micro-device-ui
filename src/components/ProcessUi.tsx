@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import { ProcessContext } from "../context/ProcessState";
-import { itemUi } from "./item-ui";
 import { Process } from "micro-device-modules";
+import { GlobalContext } from "../context/GlobalState";
+import { itemUi } from "./item-ui";
 import EditMenu from "./EditMenu";
 import { IonModal } from "@ionic/react";
 import { ProcessForm } from "./ProcessForm";
@@ -9,8 +9,8 @@ import ProcessList from "./ProcessList";
 
 export const ProcessUi: React.FC = () => {
     const [modal, setModal] = useState(false);
-    const context = useContext(ProcessContext);
-    const p = itemUi<Process>(context, setModal);
+    const context = useContext(GlobalContext);
+    const p = itemUi<Process>(context.process, setModal);
 
     return (<>
         <IonModal
@@ -19,7 +19,7 @@ export const ProcessUi: React.FC = () => {
             onDidDismiss={() => p.close()}
         >
             <ProcessForm
-                process={context.item}
+                process={context.process.item}
                 close={() => p.close()}
                 submit={p.submit}
             />

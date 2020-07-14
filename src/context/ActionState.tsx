@@ -1,7 +1,7 @@
 
-import { createItemContext } from './item-context'
 import React, { useReducer } from 'react';
 import { Action, ActionSelectable } from 'micro-device-modules';
+import { createItemContext } from './item-context'
 import { ItemState, itemReducer, SelectAction } from './item-reducer';
 import { itemSelect } from './item-state';
 
@@ -27,7 +27,9 @@ export const ActionState = (p: props) => {
     });
     return (
         <ActionContext.Provider
-            value={itemSelect<Action, ActionSelectable>(p.actions, state, dispatch)}>
+            value={
+                itemSelect<Action, ActionSelectable>(p.actions, state, dispatch)
+            }>
             {p.children}
         </ActionContext.Provider >
     )

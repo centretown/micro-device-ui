@@ -12,7 +12,7 @@ import {
 
 import { Pin } from "micro-device-modules";
 
-import { PinContext } from "../context/pin-context";
+import { PinContext } from "../context/PinState";
 
 interface pinProps {
   pin: Pin;
@@ -26,7 +26,7 @@ const PinItem: React.FC<pinProps> = (p) => {
         <IonRow className="ion-align-items-center">
           <IonCheckbox
             onIonChange={() =>
-              context.toggle(context.key(p.pin))
+              context.select.toggle(context.select.key(p.pin))
             }
           />
           <IonCol size="2" className="ion-padding-start">

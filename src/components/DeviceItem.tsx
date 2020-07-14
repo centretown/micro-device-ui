@@ -9,14 +9,14 @@ import {
   IonItem,
 } from "@ionic/react";
 
-import { DeviceContext } from "../context/device-context";
+import { GlobalContext } from "../context/GlobalState";
 
 interface deviceProps {
   device: Device;
 }
 
 const DeviceItem: React.FC<deviceProps> = (d) => {
-  const context = useContext(DeviceContext);
+  const context = useContext(GlobalContext);
   return (
     <IonItem lines="full">
       <IonGrid>
@@ -24,7 +24,7 @@ const DeviceItem: React.FC<deviceProps> = (d) => {
           <IonCheckbox
             className="ion-margin-end"
             onIonChange={() =>
-              context.toggle(context.key(d.device))
+              context.device.select.toggle(context.device.select.key(d.device))
             }
           />
           <IonCol size="4">
