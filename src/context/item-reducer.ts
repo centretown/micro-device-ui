@@ -108,6 +108,7 @@ export interface saveAction<T> {
     items: StoreableList<T>,
 }
 const save = <T>(action: saveAction<T>, state: ItemState<T>) => {
+    action.items.replace(state.list);
     action.items.save();
     return state;
 }
@@ -136,6 +137,19 @@ export const itemReducer = <T>(
     action: SelectAction<T> | ItemStoreAction<T>,
 ) => {
     const newState: ItemState<T> = { list: state.list, item: state.item };
+    const actionStore = action as ItemStoreAction<T>;
+
+    if (actionStore.store) {
+        switch (actionStore.store.type) {
+            case SAVE:
+                return save<T>(actionStore.store, newState);
+            case LOAD:
+                return load<T>(actionStore.store, newState);
+            default:
+                break;
+        }
+    }
+
     switch (action.select.type) {
         case PUT_LIST:
             return putList<T>(action.select, newState);
@@ -153,18 +167,6 @@ export const itemReducer = <T>(
             return replace<T>(action.select, newState);
         default:
             break;
-    }
-
-    const actionStore = action as ItemStoreAction<T>;
-    if (actionStore.store) {
-        switch (actionStore.store.type) {
-            case SAVE:
-                return save<T>(actionStore.store, newState);
-            case LOAD:
-                return load<T>(actionStore.store, newState);
-            default:
-                break;
-        }
     }
 
     return state;

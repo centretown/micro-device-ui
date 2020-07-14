@@ -1,5 +1,7 @@
 import React, { } from "react";
 
+import { SelectableList, StoreableList } from "micro-device-modules";
+
 import {
   ItemState,
   SelectAction,
@@ -10,16 +12,12 @@ import {
   REMOVE_SELECTED,
   REPLACE,
   TOGGLE,
-} from "./item-reducer";
-
-import {
   SAVE,
   LOAD,
   ItemStoreAction,
   StoreAction,
-} from './item-store-reducer'
+} from "./item-reducer";
 
-import { SelectableList, StoreableList } from "micro-device-modules";
 import { ItemStoreContext, ItemContext, ItemBase, ItemStore } from "./item-context";
 
 export const itemSelectBase = <T, S extends SelectableList<T>>(
