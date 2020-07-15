@@ -1,6 +1,5 @@
 import React, { useContext, useRef } from 'react'
 
-import { Device, DeviceStoreable } from 'micro-device-modules'
 import { SelectItem } from './InputItem';
 import { GlobalContext } from '../context/GlobalState';
 

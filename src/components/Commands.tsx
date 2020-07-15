@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputItem, TextInputItem, SelectItem } from './InputItem';
+import { InputItem, SelectItem } from './InputItem';
 import { IonInput } from '@ionic/react';
 import { PinLookup } from './DeviceLookup';
 
