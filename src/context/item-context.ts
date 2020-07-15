@@ -5,8 +5,10 @@ export interface ItemBase<T> {
     putList: (list: T[]) => void;
     removeSelected: () => void;
     toggle: (key: string) => void;
-    key: (item: T) => string;
     replace: (list: T[]) => void;
+    key: (item: T) => string;
+    get: (key: string) => T;
+    isSelected: (key: string) => boolean;
 }
 
 export interface ItemStore<T> {
@@ -22,8 +24,10 @@ const createItemBase = <T>(): ItemBase<T> => {
         putList: (list: T[]) => { },
         removeSelected: () => { },
         toggle: (key: string) => { },
+        isSelected: (key: string) => false,
         key: (item: T) => "",
         replace: (list: T[]) => { },
+        get: (key: string): T => { return {} as T },
     }
 }
 

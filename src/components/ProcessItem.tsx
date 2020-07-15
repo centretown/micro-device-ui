@@ -14,10 +14,13 @@ interface processProps {
 
 export const ProcessItem: React.FC<processProps> = (p) => {
     const context = useContext(GlobalContext);
+    const keyValue = context.process.select.key(p.process);
     return (
         <ItemTemplate
-            keyValue={context.process.select.key(p.process)}
-            toggle={context.process.select.toggle}>
+            keyValue={keyValue}
+            toggle={context.process.select.toggle}
+            toggled={context.process.select.isSelected(keyValue)}
+        >
 
             <IonCol size="4">
                 <IonLabel>{p.process.label}</IonLabel>

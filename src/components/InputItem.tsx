@@ -37,9 +37,9 @@ export const InputItem: React.FC<inputProps> = (p) => {
 
 interface selectProps {
   label: string,
-  options: { label: string, value: string }[],
   value: string,
   setValue: (value: any) => void;
+  options: { label: string, value: string }[],
 }
 export const SelectItem: React.FC<selectProps> = (p) => {
   return (

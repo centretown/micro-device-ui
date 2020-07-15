@@ -6,6 +6,7 @@ export const PUT = 'PUT';
 export const PUT_LIST = 'PUT_LIST';
 export const REMOVE_SELECTED = 'REMOVE_SELECTED';
 export const TOGGLE = 'TOGGLE';
+export const TOGGLED = 'TOGGLED';
 export const SELECTED = 'SELECTED';
 export const NEW = 'NEW';
 export const REPLACE = 'REPLACE';

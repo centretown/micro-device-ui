@@ -1,11 +1,12 @@
 import React, { useState, useRef } from "react";
-import { IonContent, IonSegment, IonSegmentButton, IonLabel, IonList, IonTextarea } from "@ionic/react";
+import { IonContent, IonList, IonTextarea } from "@ionic/react";
 import { Process, ActionSelectable } from "micro-device-modules";
 
 import FormHeading from "./FormHeading";
 import { TextInputItem, InputItem, SegmentItem } from "./InputItem";
 import { ActionState } from "../context/ActionState";
 import { ActionUi } from "./ActionUi";
+import { DeviceLookup } from "./DeviceLookup";
 
 interface ProcessFormProps {
     process: Process;
@@ -62,12 +63,10 @@ export const ProcessForm: React.FC<ProcessFormProps> = (p) => {
                         place="enter a label"
                         set={setLabel}
                     />
-                    <TextInputItem
-                        type="text"
+                    <DeviceLookup
                         label="Device"
                         value={deviceKey}
-                        place="the model type"
-                        set={setDeviceKey}
+                        setValue={setDeviceKey}
                     />
                     <InputItem label="Purpose">
                         <IonTextarea
@@ -81,12 +80,12 @@ export const ProcessForm: React.FC<ProcessFormProps> = (p) => {
             )}
             {segment === "setup" && (
                 <ActionState actions={setup.current}>
-                    <ActionUi />
+                    <ActionUi deviceKey={deviceKey} />
                 </ActionState>
             )}
             {segment === "loop" && (
                 <ActionState actions={loop.current}>
-                    <ActionUi />
+                    <ActionUi deviceKey={deviceKey} />
                 </ActionState>
             )}
         </IonContent>

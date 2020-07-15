@@ -10,6 +10,7 @@ import {
 } from "@ionic/react";
 
 import { GlobalContext } from "../context/GlobalState";
+import { ItemTemplate } from "./ItemTemplate";
 
 interface deviceProps {
   device: Device;
@@ -17,28 +18,23 @@ interface deviceProps {
 
 const DeviceItem: React.FC<deviceProps> = (d) => {
   const context = useContext(GlobalContext);
+  const keyValue = context.device.select.key(d.device);
   return (
-    <IonItem lines="full">
-      <IonGrid>
-        <IonRow className="ion-align-items-center">
-          <IonCheckbox
-            className="ion-margin-end"
-            onIonChange={() =>
-              context.device.select.toggle(context.device.select.key(d.device))
-            }
-          />
-          <IonCol size="4">
-            <IonLabel>{d.device.label}</IonLabel>
-          </IonCol>
-          <IonCol size="5">
-            <IonLabel>{d.device.model}</IonLabel>
-          </IonCol>
-          <IonCol size="12">
-            <IonLabel>{d.device.ip}</IonLabel>
-          </IonCol>
-        </IonRow>
-      </IonGrid>
-    </IonItem>
+    <ItemTemplate
+      keyValue={keyValue}
+      toggle={context.device.select.toggle}
+      toggled={context.device.select.isSelected(keyValue)}
+    >
+      <IonCol size="4">
+        <IonLabel>{d.device.label}</IonLabel>
+      </IonCol>
+      <IonCol size="5">
+        <IonLabel>{d.device.model}</IonLabel>
+      </IonCol>
+      <IonCol size="12">
+        <IonLabel>{d.device.ip}</IonLabel>
+      </IonCol>
+    </ItemTemplate>
   );
 };
 

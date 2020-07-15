@@ -1,6 +1,7 @@
 import React from 'react';
 import { InputItem, TextInputItem, SelectItem } from './InputItem';
 import { IonInput } from '@ionic/react';
+import { PinLookup } from './DeviceLookup';
 
 interface delayCommandProps {
     duration: number,
@@ -21,6 +22,7 @@ export const DelaySnippet: React.FC<delayCommandProps> = (p) => {
 }
 
 interface modeCommandProps {
+    deviceKey: string;
     id: number,
     signal: string,
     mode: string,
@@ -31,14 +33,12 @@ interface modeCommandProps {
 
 export const ModeSnippet: React.FC<modeCommandProps> = (p) => {
     return (<>
-        <InputItem label="Pin Number">
-            <IonInput
-                type="number"
-                value={p.id}
-                placeholder="pin id number"
-                onIonChange={(e) => p.setId(+e.detail.value!)}
-            />
-        </InputItem>
+        <PinLookup
+            deviceKey={p.deviceKey}
+            label="Pin"
+            value={p.id.toString()}
+            setValue={p.setId}
+        />
         <SelectItem
             label="Signal"
             value={p.signal}
@@ -61,6 +61,7 @@ export const ModeSnippet: React.FC<modeCommandProps> = (p) => {
 }
 
 interface pinCommandProps {
+    deviceKey: string,
     id: number,
     signal: string,
     mode: string,
@@ -73,14 +74,12 @@ interface pinCommandProps {
 
 export const PinSnippet: React.FC<pinCommandProps> = (p) => {
     return (<>
-        <InputItem label="Pin Number">
-            <IonInput
-                type="number"
-                value={p.id}
-                placeholder="pin id number"
-                onIonChange={(e) => p.setId(+e.detail.value!)}
-            />
-        </InputItem>
+        <PinLookup
+            deviceKey={p.deviceKey}
+            label="Pin"
+            value={p.id.toString()}
+            setValue={p.setId}
+        />
         <SelectItem
             label="Signal"
             value={p.signal}

@@ -57,9 +57,6 @@ export const itemSelectBase = <T, S extends SelectableList<T>>(
         }
       });
     },
-    key: (item: T) => {
-      return items.key(item);
-    },
     toggle: (key: string) => {
       dispatch({
         select: {
@@ -78,8 +75,17 @@ export const itemSelectBase = <T, S extends SelectableList<T>>(
         }
       });
     },
-  }
-}
+    key: (item: T) => {
+      return items.key(item);
+    },
+    isSelected: (key: string): boolean => {
+      return items.isSelected(key);
+    },
+    get: (key: string): T => {
+      return items.get(key);
+    },
+  };
+};
 
 export const itemSelect = <T, S extends SelectableList<T>>(
   items: S,
@@ -91,8 +97,8 @@ export const itemSelect = <T, S extends SelectableList<T>>(
     list: state.list,
     item: state.item,
     select: itemSelectBase<T, S>(items, dispatch),
-  }
-}
+  };
+};
 
 export const itemStoreBase = <T, S extends StoreableList<T>>(
   items: S,
@@ -115,8 +121,8 @@ export const itemStoreBase = <T, S extends StoreableList<T>>(
         }
       })
     },
-  }
-}
+  };
+};
 
 export const itemStore = <T, S extends StoreableList<T>>(
   items: S,
@@ -131,5 +137,5 @@ export const itemStore = <T, S extends StoreableList<T>>(
       dispatch as React.Dispatch<SelectAction<T>>),
     store: itemStoreBase<T, S>(items,
       dispatch as React.Dispatch<StoreAction<T>>)
-  }
-}
+  };
+};

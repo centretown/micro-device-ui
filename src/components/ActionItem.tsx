@@ -37,11 +37,13 @@ export const ActionItem: React.FC<actionProps> = (p) => {
             }
             break;
     }
-
+    const keyValue = context.select.key(p.action);
     return (
         <ItemTemplate
-            keyValue={context.select.key(p.action)}
-            toggle={context.select.toggle}>
+            keyValue={keyValue}
+            toggle={context.select.toggle}
+            toggled={context.select.isSelected(keyValue)}
+        >
 
             <IonCol size="4">
                 <IonLabel>{p.action.sequence}</IonLabel>

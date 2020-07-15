@@ -23,6 +23,7 @@ import { DelaySnippet, ModeSnippet, PinSnippet } from "./Commands";
 
 
 interface ActionFormProps {
+    deviceKey: string,
     action: Action;
     submit: (p: Action) => void;
     close: () => void;
@@ -110,6 +111,7 @@ export const ActionForm: React.FC<ActionFormProps> = (p) => {
                     />}
                 {type === MODE_COMMAND &&
                     <ModeSnippet
+                        deviceKey={p.deviceKey}
                         id={id}
                         signal={signal}
                         mode={mode}
@@ -119,6 +121,7 @@ export const ActionForm: React.FC<ActionFormProps> = (p) => {
                     />}
                 {type === PIN_COMMAND &&
                     <PinSnippet
+                        deviceKey={p.deviceKey}
                         id={id}
                         signal={signal}
                         mode={mode}
